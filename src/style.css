@@ -1,0 +1,8 @@
+nav {
+    background-color: #2874f0;
+}
+.navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .show>.nav-link, .navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-nav .nav-link.disabled {
+    color: #fff;
+}
