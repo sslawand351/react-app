@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
 import Carousel from './components/Carousel'
+import SignUp from './components/SignUp'
 import './style.css'
 
 var data = {
@@ -12,6 +13,7 @@ function App() {
     <div>
       <Navbar data={data} />
       <Carousel />
+      <SignUp />
     </div>
   );
 }
