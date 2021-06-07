@@ -1,11 +1,27 @@
 import Product from './Product'
-import products from '../data'
+import { useEffect, useState } from 'react';
+import {getAllCakes} from './../apis/Api'
+import Loader from './Loader';
 
 function ProductListing() {
+	let [cakes, setCakes] = useState()
+
+	useEffect(() => {
+		getAllCakes().then((response) => {
+			// console.log('cakes', response);
+			setCakes(response)
+		}, (error) => {
+			console.log('cakes error', error);
+		})
+	}, [])
+	if (!cakes) {
+		return <Loader text="Please wait loading cakes" />
+	}
 	return (
-		<div className="col-md-12">
+		<div className="col-md-12 mt-4 mb-4">
+			<h2>Cakes</h2>
 			<div className="row">
-				{products.map((product, index) => {
+				{cakes.map((product, index) => {
 					return <Product product={product} key={index} />
 				})}
 			</div>
