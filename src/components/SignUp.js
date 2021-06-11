@@ -150,7 +150,7 @@ class SignUp extends Component
               <input onChange={this.validateConfirmPassword} type="password" className={this.state.confirmPassword.error ? 'form-control is-invalid' : 'form-control'} id="confirmPassword" placeholder="Enter confirm password" />
               {this.state.confirmPassword.error}
             </div>
-            <button onClick={this.validateForm} type="submit" className="btn btn-primary btn-block">Submit</button>
+            <button onClick={this.validateForm} type="submit" className="btn btn-primary btn-block">SignUp</button>
           </form>
         </div>
       </div>

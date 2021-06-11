@@ -19,7 +19,7 @@ function Navbar(props) {
   }
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
-      <Link className="navbar-brand" to="/">{props.data.projectName}</Link>
+      <Link className="navbar-brand" to="/"><img className="mr-2" src="/cake-logo.png" alt="" width="28" height="28" />{props.data.projectName}</Link>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>

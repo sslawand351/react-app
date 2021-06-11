@@ -17,7 +17,7 @@ import { cartMiddleware } from './middleware/cart'
 import Checkout from './components/Checkout'
 
 var data = {
-  projectName: "React Training",
+  projectName: "Cake Shop",
   userName: "Sagar",
 }
 console.log(process.env)
