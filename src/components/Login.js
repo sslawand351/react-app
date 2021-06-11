@@ -72,7 +72,7 @@ function Login(props) {
     }
   }
   return (
-    <div className="text-center">
+    <div className="text-center mt-5 mb-5 ml-3 mr-3">
     <form className="form-signin">
       <img className="mb-4" src="https://i.pinimg.com/originals/e6/64/11/e66411fe19cedf7a90409d53c1c6531f.png" alt="" width="72" height="72" />
       <h1 className="h3 mb-3 font-weight-normal">Please log in</h1>

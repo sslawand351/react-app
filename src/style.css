@@ -63,23 +63,26 @@ nav a, nav a:hover, nav a:active, nav a:focus {
 /* nav .search-button:before {
   content: "\e68a";
 } */
-.form-signin {
+.form-signup, .form-signin {
     width: 100%;
     max-width: 330px;
     padding: 15px;
     margin: 0 auto;
   }
-  .form-signin .checkbox {
+  .form-signup {
+    max-width: 500px;
+  }
+  .form-signup .checkbox, .form-signin .checkbox {
     font-weight: 400;
   }
-  .form-signin .form-control {
+  .form-signup .form-control, .form-signin .form-control {
     position: relative;
     box-sizing: border-box;
     height: auto;
     padding: 10px;
     font-size: 16px;
   }
-  .form-signin .form-control:focus {
+  .form-signup .form-control:focus, .form-signin .form-control:focus {
     z-index: 2;
   }
   .form-signin input[type="email"] {
@@ -154,6 +157,6 @@ nav a, nav a:hover, nav a:active, nav a:focus {
   border: 1px solid #dc3545;
   border-radius: 50%;
  }
- .cake-details {
-   background-color: #ffffff;
- }
+.form-signin, .form-signup, .cake-details {
+  background-color: #ffffff;
+}

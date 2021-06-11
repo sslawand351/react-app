@@ -122,9 +122,9 @@ class SignUp extends Component
   render() {
     return (
       <div className="container">
-        <div>
-          <form>
-            <h2>SignUp</h2>
+        <div className="mt-5 mb-5 ml-3 mr-3">
+          <form className="form-signup">
+            <h2 className="text-center">SignUp</h2>
             <div className={this.state.fullname.error ? 'form-group text-danger' : 'form-group'}>
               <label htmlFor="fullName">Fullname</label>
               <input onChange={this.validateFullname} type="text" className={this.state.fullname.error ? 'form-control is-invalid' : 'form-control'} id="fullname" placeholder="Fullname" />
@@ -150,7 +150,7 @@ class SignUp extends Component
               <input onChange={this.validateConfirmPassword} type="password" className={this.state.confirmPassword.error ? 'form-control is-invalid' : 'form-control'} id="confirmPassword" placeholder="Enter confirm password" />
               {this.state.confirmPassword.error}
             </div>
-            <button onClick={this.validateForm} type="submit" className="btn btn-primary">Submit</button>
+            <button onClick={this.validateForm} type="submit" className="btn btn-primary btn-block">Submit</button>
           </form>
         </div>
       </div>
