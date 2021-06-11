@@ -147,3 +147,13 @@ nav a, nav a:hover, nav a:active, nav a:focus {
   transform: scale(1.1);
   z-index: 1;
 }
+.badge {
+  position: relative;
+  top: -15px;
+  left: -15px;
+  border: 1px solid #dc3545;
+  border-radius: 50%;
+ }
+ .cake-details {
+   background-color: #ffffff;
+ }

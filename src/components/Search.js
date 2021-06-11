@@ -3,6 +3,7 @@ import { getCakesBySearchKeyword } from "../apis/Api"
 import Product from "./Product"
 import { useEffect, useState } from "react"
 import Loader from "./Loader"
+import NoRecordFound from "./NoRecordFound"
 
 function Search (props) {
   console.log(props)
@@ -26,11 +27,12 @@ function Search (props) {
   return <div className="container">
     <div className="col-md-12 mt-4 mb-4">
 			<h2>Search Page for {query.q}</h2>
-			<div className="row">
+			{cakes.length === 0 ? <NoRecordFound text="No cakes found" /> :
+        <div className="row">
         {cakes.map((product, index) => {
           return <Product product={product} key={index} />
         })}
-      </div>
+      </div>}
     </div>
   </div>
 }

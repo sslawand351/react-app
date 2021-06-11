@@ -1,11 +1,49 @@
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router"
-import { getCakeById } from "../apis/Api"
+import { connect } from "react-redux"
+import { useParams, withRouter } from "react-router"
+import { addToCart, getCakeById } from "../apis/Api"
+import { addToCartMiddleware } from "../middleware/cart"
 import Loader from "./Loader"
 
 const CakeDetails = (props) => {
   let cakeParams = useParams()
   let [cake, setCake] = useState()
+  // let [message, setErrorMessage] = useState()
+  // if (props.cakeAddedToCart) {
+  //   props.history.push('/cart')
+  // }
+  console.log('cake props', props)
+
+  const onClickAddToCart = (event) => {
+    // if (!localStorage.token) {
+    //   // setErrorMessage('Please login before add to cart')
+    //   return;
+    // }
+    // setErrorMessage('')
+    props.dispatch(addToCartMiddleware(localStorage.token, {
+      cakeid: cake.cakeid,
+      image: cake.image,
+      name: cake.name,
+      price: cake.price,
+      weight: cake.weight
+    }))
+    // addToCart(localStorage.token, {
+    //   cakeid: cake.cakeid,
+    //   image: cake.image,
+    //   name: cake.name,
+    //   price: cake.price,
+    //   weight: cake.weight
+    // }).then(response => {
+    //   if (!response.data) {
+    //     setErrorMessage(response.message)
+    //     return;
+    //   }
+    //   props.dispatch({
+    //     type: 'ADD_TO_CART',
+    //     payload: {...cake}
+    //   })
+    // })
+  }
 
   useEffect(() => {
     getCakeById(cakeParams.id)
@@ -15,8 +53,11 @@ const CakeDetails = (props) => {
   if (!cake) {
     return <Loader text="Please wait loading cake" />
   }
+
   let ratings = Math.floor(cake.ratings)
-  return <section className="mt-5 mb-5">
+  return <div className="container mt-4">
+    <h1>{cake.name}</h1>
+    <section className="cake-details mb-5 pt-4 pb-4">
     <div className="col-md-12 row">
       <div className="col-md-5 mb-4 mb-md-0">
         <div className="mdb-lightbox">
@@ -106,12 +147,28 @@ const CakeDetails = (props) => {
           </table>
         </div> */}
         <button type="button" className="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
-        <button type="button" className="btn btn-light btn-md mr-1 mb-2"><i
-            className="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+        {!props.isLoading && <button onClick={onClickAddToCart} type="button" className="btn btn-light btn-md mr-1 mb-2"><i
+            className="fas fa-shopping-cart pr-2"></i>Add to cart</button>}
+        {props.isLoading && <button type="button" className="btn btn-light btn-md mr-1 mb-2" disabled><i
+            className="fas fa-shopping-cart pr-2"></i> Please wait... Adding to cart</button>}
+        <h6 className="text-danger">{props.error?.message}</h6>
       </div>
     </div>
   
-  </section>
+  </section></div>
 }
 
-export default CakeDetails
+export default connect((state, props) => {
+  props.history.listen((location, action) => {
+    if (action === 'PUSH') {
+      state.CartReducer.error = undefined
+      state.CartReducer.cakeAddedToCart = undefined
+    }
+  })
+  if (state.CartReducer.cakeAddedToCart) {
+    props.history.push('/cart')
+  }
+  return {
+    ...state.CartReducer
+  }
+})(withRouter(CakeDetails))

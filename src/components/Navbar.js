@@ -1,6 +1,8 @@
+import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom"
 
 function Navbar(props) {
+  // alert(JSON.stringify(props))
   let searchString
   let searchFor = 'Enter the search keyword'
   let search = (event) => {
@@ -24,8 +26,8 @@ function Navbar(props) {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          {props.loggedInUser?.name && <li className="nav-item active">
-            Welcome {props.loggedInUser?.name}
+          {props.user?.name && <li className="nav-item active">
+            Welcome {props.user?.name}
           </li>}
           {/* <li className="nav-item">
             <a className="nav-link" href="#link">Link</a>
@@ -36,13 +38,20 @@ function Navbar(props) {
           {/* <span>{searchFor}</span> */}
           <button onClick={search} className="btn btn-outline-success my-2 my-sm-0 search-button" type="submit"><i className="fa fa-search"></i></button>
         </form>
-        {props.loggedInUser?.token && <span onClick={() => props.logout()} className="nav-link">Log out</span>}
-        {!props.loggedInUser?.token && <Link to="/signup"><span className="nav-link">SignUp</span></Link>}
-        {!props.loggedInUser?.token && <Link to="/login"><span className="nav-link">Login</span></Link>}
+        {props.user?.token && <span onClick={() => props.logout()} className="nav-link">Log out</span>}
+        {!props.user?.token && <Link to="/signup"><span className="nav-link">SignUp</span></Link>}
+        {!props.user?.token && <Link to="/login"><span className="nav-link">Login</span></Link>}
+        {props.user?.token && <Link to="/cart"><span className="nav-link"><i className="fas fa-shopping-cart pr-2"></i><span class="badge badge-danger">{props.cart?.length}</span></span></Link>}
         {/* {!isLoggedIn && <button onClick={() => login(true)} className="btn btn-danger">Login</button>} */}
       </div>
     </nav>
   )
 }
 
-export default withRouter(Navbar)
+const mapStateToProps = (state, props) => {
+  // alert('State  ' + JSON.stringify(state))
+  return {
+    ...state.CartReducer
+  }
+}
+export default connect(mapStateToProps)(withRouter(Navbar))

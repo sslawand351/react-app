@@ -2,8 +2,15 @@ import { useState } from "react"
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { login } from "../apis/Api";
+import { isEmpty, isValidEmail } from "../form-validation";
+import loginMiddleware from "../middleware/login";
 
 function Login(props) {
+  // alert(JSON.stringify(props))
+  console.log(props)
+  if (props.user?.token) {
+    props.history.push('/')
+  }
   let [user, setUser] = useState({
     email:{value:null, error: null},
     password:{value:null, error: null}
@@ -14,7 +21,7 @@ function Login(props) {
     let email = event.target.value.trim()
     setUser({
       ...user,
-      email: {value:email, error: validateEmail(email)}
+      email: {value:email, error: isEmpty(email) || !isValidEmail(email)}
     })
   }
 
@@ -32,35 +39,37 @@ function Login(props) {
     let password = event.target.value
     setUser({
       ...user,
-      password: {value:password, error: password ? false : true}
+      password: {value:password, error: isEmpty(password)}
     })
   }
 
   const onLogin = (event) => {
     event.preventDefault()
+    let emailError = isEmpty(user.email.value) || !isValidEmail(user.email.value)
+    let passwordError = isEmpty(user.password.value)
+    let isValid = !emailError && !passwordError
     setUser({
-      email: {value:user.email.value, error: validateEmail(user.email.value)},
-      password: {value:user.password.value, error: user.password.value ? false : true}
+      email: {value:user.email.value, error: emailError},
+      password: {value:user.password.value, error: passwordError}
     })
-    if (!user.email.value || !user.password.value
-      || user.email.error || user.password.error) {
-      return;
+    if (isValid) {
+      console.log('Valid')
+      props.dispatch(loginMiddleware(user))
+    
+    // login(user.email.value, user.password.value).then(response => {
+    //   if (!response.token) {
+    //     setLoginErrorMessage(response.message)
+    //   } else {
+    //     props.dispatch({
+    //       type: 'LOGIN',
+    //       payload: {...response}
+    //     })
+    //     localStorage.token = response.token
+    //     props.setLoggedInUser(response)
+    //     props.history.push('/')
+    //   }
+    // }, error => console.log(error))
     }
-    login(user.email.value, user.password.value).then(response => {
-      if (!response.token) {
-        setLoginErrorMessage(response.message)
-      } else {
-        props.dispatch({
-          type: 'LOGIN',
-          payload: {
-            token: response.token
-          }
-        })
-        localStorage.token = response.token
-        props.setLoggedInUser(response)
-        props.history.push('/')
-      }
-    }, error => console.log(error))
   }
   return (
     <div className="text-center">
@@ -73,11 +82,16 @@ function Login(props) {
       <label htmlFor="inputPassword" className="sr-only">Password</label>
       <input onChange={validatePassword} type="password" id="inputPassword" className={user.password.error ? 'form-control is-invalid' : 'form-control'} placeholder="Password" required="" />
       <div className="mb-3"></div>
-      <button onClick={onLogin} className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      {!props.isLoading && <button onClick={onLogin} className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>}
+      {props.isLoading && <button className="btn btn-lg btn-secondary btn-block" type="submit" disabled>Please wait. Loading ...</button>}
       <p className="mt-5 mb-3 text-muted">© 2021-2022</p>
     </form>
     </div>
   )
 }
 
-export default connect()(withRouter(Login))
+export default connect((state, props) => {
+  return {
+    ...state.AuthReducer
+  }
+})(withRouter(Login))
