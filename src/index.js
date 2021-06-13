@@ -5,10 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import myStore from './reduxstore/store';
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={myStore}><App /></Provider>
+    <Provider store={myStore}><App history={history}/></Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

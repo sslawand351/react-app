@@ -39,6 +39,7 @@ export function getUserByToken(token) {
   return axios({method:"get", url: process.env.REACT_APP_CAKE_API_URL + "getuserdetails", headers: {authtoken: token}})
     .then(response => response.data.data, error => {
       console.log(error);
+      localStorage.removeItem('token');
       return error
     })
 }
@@ -58,5 +59,37 @@ export function addToCart(token, cakeData) {
 
 export function getCart(token) {
   return axios({method:"post", url: process.env.REACT_APP_CAKE_API_URL + "cakecart", headers: {authtoken: token}})
+    .then(response => response.data, error => [])
+}
+
+export function removeOneCakeFromCart(token, cakeid) {
+  return axios({method:"post", url: process.env.REACT_APP_CAKE_API_URL + "removeonecakefromcart", headers: {authtoken: token}, data:{cakeid:cakeid}})
+    .then(response => response.data, error => [])
+}
+
+export function removeCakeFromCart(token, cakeid) {
+  return axios({method:"post", url: process.env.REACT_APP_CAKE_API_URL + "removecakefromcart", headers: {authtoken: token}, data:{cakeid:cakeid}})
+    .then(response => response.data, error => [])
+}
+
+export const createOrder = (token, cart, address) => {
+  return axios({
+    method:"post",
+    url: process.env.REACT_APP_CAKE_API_URL + "addcakeorder",
+    headers: {authtoken: token},
+    data:{
+      name: address.fullname,
+      city: address.city,
+      pincode: address.pincode,
+      address: address.addressLine,
+      phone: address.phone,
+      price: cart.totalPrice,
+      cakes: cart.items
+    }
+  })
+}
+
+export const getOrders = (token) => {
+  return axios({method:"post", url: process.env.REACT_APP_CAKE_API_URL + "cakeorders", headers: {authtoken: token}})
     .then(response => response.data, error => [])
 }

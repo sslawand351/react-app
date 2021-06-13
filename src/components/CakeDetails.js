@@ -9,9 +9,10 @@ const CakeDetails = (props) => {
   let cakeParams = useParams()
   let [cake, setCake] = useState()
   // let [message, setErrorMessage] = useState()
-  // if (props.cakeAddedToCart) {
-  //   props.history.push('/cart')
-  // }
+  if (props.redirect) {
+    props.dispatch({type: 'CLEAR_MESSAGE'})
+    props.history.push(props.redirect)
+  }
   console.log('cake props', props)
 
   const onClickAddToCart = (event) => {
@@ -160,14 +161,16 @@ const CakeDetails = (props) => {
 
 export default connect((state, props) => {
   props.history.listen((location, action) => {
+    console.log(location, action)
     if (action === 'PUSH') {
       state.CartReducer.error = undefined
-      state.CartReducer.cakeAddedToCart = undefined
+      state.CartReducer.redirect = undefined
     }
   })
-  if (state.CartReducer.cakeAddedToCart) {
-    props.history.push('/cart')
-  }
+
+  // if (state.CartReducer.redirect) {
+  //   props.history.push(state.CartReducer.redirect)
+  // }
   return {
     ...state.CartReducer
   }

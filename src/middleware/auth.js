@@ -5,7 +5,7 @@ export const AuthMiddleware = user => {
     if (user.token) {
       getUserByToken(user.token).then(response => {
         if (response.token) {
-          dispatch({type: 'LOGIN_SUCCESS', payload: {...response}})
+          dispatch({type: 'GET_USER_BY_TOKEN_SUCCESS', payload: {...response}})
         } else {
           dispatch({
             type: 'LOGIN_FAILURE',

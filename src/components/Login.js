@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { login } from "../apis/Api";
 import { isEmpty, isValidEmail } from "../form-validation";
 import loginMiddleware from "../middleware/login";
+import { PopupMessage } from "./PopupMessage";
 
 function Login(props) {
   // alert(JSON.stringify(props))
@@ -11,6 +12,12 @@ function Login(props) {
   if (props.user?.token) {
     props.history.push('/')
   }
+
+  // useEffect(() => {
+  //   if (props.redirect != '/login') {
+  //     props.dispatch({type:'CLEAR_MESSAGE'})
+  //   }
+  // }, [props.history.location.pathname]);
   let [user, setUser] = useState({
     email:{value:null, error: null},
     password:{value:null, error: null}
@@ -23,16 +30,6 @@ function Login(props) {
       ...user,
       email: {value:email, error: isEmpty(email) || !isValidEmail(email)}
     })
-  }
-
-  const validateEmail = (email) => {
-    console.log("Email ", email);
-    if (email == null || email.length === 0) {
-      return true;
-    } else if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email) === false) {
-      return true;
-    }
-    return false
   }
 
   const validatePassword = (event) => {
@@ -71,12 +68,14 @@ function Login(props) {
     // }, error => console.log(error))
     }
   }
+  console.log(props.prevPath)
+  console.log(props.prevPath.match(/cake|cart|checkout/g))
   return (
     <div className="text-center mt-5 mb-5 ml-3 mr-3">
     <form className="form-signin">
       <img className="mb-4" src="/cake-logo.png" alt="" width="72" height="72" />
       <h1 className="h3 mb-3 font-weight-normal">Please log in</h1>
-      <div className="text-danger mb-2"><span>{loginErrorMessage}</span></div>
+      {/* <div className="text-danger mb-2"><span>{props.error?.message}</span></div> */}
       <label htmlFor="inputEmail" className="sr-only">Email address</label>
       <input onChange={onChangeEmail} type="email" id="inputEmail" className={user.email.error ? 'form-control is-invalid' : 'form-control'} placeholder="Email address" required="" autoFocus="" />
       <label htmlFor="inputPassword" className="sr-only">Password</label>
@@ -91,7 +90,12 @@ function Login(props) {
 }
 
 export default connect((state, props) => {
+  // let message = props.message == state.CartReducer.message && props.history?.action == 'PUSH'
+    // ? state.CartReducer.message: null
+
   return {
-    ...state.AuthReducer
+    ...state.AuthReducer,
+    redirect: state.CartReducer.redirect,
+    message: state.CartReducer.message
   }
 })(withRouter(Login))
