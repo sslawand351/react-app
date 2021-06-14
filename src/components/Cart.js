@@ -5,31 +5,25 @@ import { addToCartMiddleware, removeCakeFromCartMiddleware, removeOneCakeFromCar
 import { PopupMessage } from "./PopupMessage"
 
 function Cart(props) {
-  // useEffect(() => {
-  //   props.dispatch(cartMiddleware(localStorage.token))
-  // }, [props.cart.totalQty])
-
-  // if (!props.cart.items.length) {
-  //   props.dispatch({type: 'CART_IS_EMPTY'})
-  //   props.history.push('/')
-  // }
   useEffect(() => {
     if (props.redirect) {
       props.dispatch({type: 'CLEAR_REDIRECT'})
     }
   }, [props.redirect])
-  // console.log(props.cart.items)
+
   const removeFromCart = (event) => {
     let cakeid = event.target.getAttribute('data-cakeid')
     props.dispatch(removeCakeFromCartMiddleware(localStorage.token, cakeid))
   }
+
   const decreaseQty = (event) => {
     let cakeid = event.target.getAttribute('data-cakeid')
     props.dispatch(removeOneCakeFromCartMiddleware(localStorage.token, cakeid))
   }
+
   const increaseQty = (event) => {
     let cake = JSON.parse(event.target.getAttribute('data-cake'))
-    console.log(cake)
+
     props.dispatch(addToCartMiddleware(localStorage.token, {
       cakeid: cake.cakeid,
       image: cake.image,
@@ -38,6 +32,7 @@ function Cart(props) {
       weight: cake.weight
     }))
   }
+
   return <>
   {props.message && <PopupMessage message={props.message} qty={props.cart.totalQty}/>}
   <div className="container mt-5 mb-5">
@@ -61,7 +56,6 @@ function Cart(props) {
                   <div className="row main align-items-center">
                       <div className="col-2"><img className="" src={item.image} alt="" width="60" height="60" /></div>
                       <div className="col">
-                          {/* <div className="row text-muted">Shirt</div> */}
                           <div className="row">{item.name}</div>
                       </div>
                       <div className="col"> <span onClick={decreaseQty} data-cakeid={item.cakeid} className="btn btn-sm border up-qty">-</span><span className="btn btn-sm border ml-2 mr-2 qty">{item.quantity}</span><span onClick={increaseQty} data-cake={JSON.stringify(item)} className="btn btn-sm border up-qty">+</span> </div>
@@ -80,20 +74,11 @@ function Cart(props) {
                   <div className="col">ITEMS {props.cart.items.length}</div>
                   <div className="col text-right">&#x20B9; {props.cart.totalPrice}</div>
               </div>
-              {/* <div className="row">
-                  <div className="col">SHIPPING</div>
-                  <div className="col text-right">&#x20B9; 0.00</div>
-              </div> */}
-              {/* <form>
-                  <p>SHIPPING</p> <select>
-                      <option className="text-muted">Standard-Delivery- &euro;5.00</option>
-                  </select>
-                  <p>GIVE CODE</p> <input id="code" placeholder="Enter your code" />
-              </form> */}
               <div className="row mt-5" style={{borderTop: "1px solid rgba(0,0,0,.1)", padding: "2vh 0"}}>
                   <div className="col">TOTAL PRICE</div>
                   <div className="col text-right">&#x20B9; {props.cart.totalPrice}</div>
-              </div> <Link to="/checkout/summary"><button className="btn">CHECKOUT</button></Link>
+              </div>
+              <Link to="/checkout/summary"><button className="btn">CHECKOUT</button></Link>
           </div>
       </div>
     </div>
@@ -102,7 +87,6 @@ function Cart(props) {
 }
 
 export default connect(state => {
-  console.log(state.CartReducer)
   return {
     ...state.CartReducer
   }

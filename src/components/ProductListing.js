@@ -9,15 +9,16 @@ function ProductListing() {
 
   useEffect(() => {
     getAllCakes().then((response) => {
-      // console.log('cakes', response);
       setCakes(response)
     }, (error) => {
       console.log('cakes error', error);
     })
   }, [])
+
   if (!cakes) {
     return <Loader text="Please wait loading cakes" />
   }
+
   return (
     <div className="col-md-12 mt-4 mb-4">
       <h2>Cakes</h2>

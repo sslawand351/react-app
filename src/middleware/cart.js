@@ -12,16 +12,18 @@ export const addToCartMiddleware = (token, cart) => {
       })
       return
     }
+
     dispatch({type: 'ADD_TO_CART_REQUEST_INIT'})
+
     addToCart(token, cart).then(response => {
       if (!response.data) {
-        // setErrorMessage(response.message)
         dispatch({
           type: 'ADD_TO_CART_FAILURE',
           payload: {...response}
         })
         return;
       }
+
       dispatch({
         type: 'ADD_TO_CART_SUCCESS',
         payload: {...response}

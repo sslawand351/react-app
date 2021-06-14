@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
 
 function Product(props) {
-  // console.log(props);
   if (!props.product) {
     return null
   }
+
   return (
     <div className="col-md-3 mt-3 mb-3">
       <div className="card zoom" id={props.product.cakeid}>

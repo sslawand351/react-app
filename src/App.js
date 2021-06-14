@@ -21,23 +21,7 @@ var data = {
   userName: "Sagar",
 }
 function App(props) {
-  // console.log(props.history)
-  // console.log(prevPath)
-  // let [user, setLoggedInUser] = useState()
-  // console.log('token', props)
   useEffect(() => {
-    // getUserByToken(localStorage.token).then(response => {
-    //   if (response.token) {
-    //     localStorage.token = response.token
-    //     setLoggedInUser(response)
-    //   } else {
-    //     console.log(response);
-    //     setLoggedInUser({})
-    //   }
-    // }, error => {
-    //   console.log(error);
-    //   setLoggedInUser({})
-    // })
     if (localStorage.token) {
       props.dispatch(AuthMiddleware({token: localStorage.token}))
     }
@@ -49,14 +33,11 @@ function App(props) {
     }
   }, [props.user?.token, props.cart?.length])
 
-  
-
   const logout = () => {
     localStorage.removeItem('token')
     props.dispatch({
       type: 'LOGOUT'
     })
-    // setLoggedInUser({})
   } 
 
   return <>
@@ -80,12 +61,6 @@ function App(props) {
 }
 
 const mapStateToProps = (state, props) => {
-  // alert('State  ' + JSON.stringify(state))
-  // if () {
-
-  // }
-  // console.log(state.AuthReducer.message)
-  // console.log(state.CartReducer.message)
   return {
     ...state.AuthReducer,
     authMessage: state.AuthReducer.message,
@@ -93,4 +68,5 @@ const mapStateToProps = (state, props) => {
     cartItemsCount: state.CartReducer?.cart?.items?.length || 0
   }
 }
+
 export default connect(mapStateToProps)(App)

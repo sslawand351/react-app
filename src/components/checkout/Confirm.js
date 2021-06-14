@@ -16,6 +16,7 @@ function Confirm(props) {
       props.dispatch(placeOrderMiddleware(localStorage.token, props.cart, props.cart.address))
     }
   }
+
   return <>
     <div className="title">
         <div className="row m-0">

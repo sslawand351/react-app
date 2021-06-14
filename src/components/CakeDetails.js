@@ -8,19 +8,12 @@ import Loader from "./Loader"
 const CakeDetails = (props) => {
   let cakeParams = useParams()
   let [cake, setCake] = useState()
-  // let [message, setErrorMessage] = useState()
-  // if (props.redirect) {
-  //   props.dispatch({type: 'CLEAR_REDIRECT'})
-  //   props.history.push(props.redirect)
-  // }
-  console.log('cake props', props)
+
+  if (props.redirect) {
+    props.dispatch({type: 'CLEAR_REDIRECT'})
+  }
 
   const onClickAddToCart = (event) => {
-    // if (!localStorage.token) {
-    //   // setErrorMessage('Please login before add to cart')
-    //   return;
-    // }
-    // setErrorMessage('')
     props.dispatch(addToCartMiddleware(localStorage.token, {
       cakeid: cake.cakeid,
       image: cake.image,
@@ -28,22 +21,6 @@ const CakeDetails = (props) => {
       price: cake.price,
       weight: cake.weight
     }))
-    // addToCart(localStorage.token, {
-    //   cakeid: cake.cakeid,
-    //   image: cake.image,
-    //   name: cake.name,
-    //   price: cake.price,
-    //   weight: cake.weight
-    // }).then(response => {
-    //   if (!response.data) {
-    //     setErrorMessage(response.message)
-    //     return;
-    //   }
-    //   props.dispatch({
-    //     type: 'ADD_TO_CART',
-    //     payload: {...cake}
-    //   })
-    // })
   }
 
   useEffect(() => {
@@ -106,53 +83,11 @@ const CakeDetails = (props) => {
           </table>
         </div>
         <hr />
-        {/* <div className="table-responsive mb-2">
-          <table className="table table-sm table-borderless">
-            <tbody>
-              <tr>
-                <td className="pl-0 pb-0 w-25">Quantity</td>
-                <td className="pb-0">Select size</td>
-              </tr>
-              <tr>
-                <td className="pl-0">
-                  <div className="def-number-input number-input safari_only mb-0">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                      className="minus"></button>
-                    <input className="quantity" min="0" name="quantity" value="1" type="number" />
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                      className="plus"></button>
-                  </div>
-                </td>
-                <td>
-                  <div className="mt-1">
-                    <div className="form-check form-check-inline pl-0">
-                      <input type="radio" className="form-check-input" id="small" name="materialExampleRadios"
-                        checked />
-                      <label className="form-check-label small text-uppercase card-link-secondary"
-                        for="small">Small</label>
-                    </div>
-                    <div className="form-check form-check-inline pl-0">
-                      <input type="radio" className="form-check-input" id="medium" name="materialExampleRadios" />
-                      <label className="form-check-label small text-uppercase card-link-secondary"
-                        for="medium">Medium</label>
-                    </div>
-                    <div className="form-check form-check-inline pl-0">
-                      <input type="radio" className="form-check-input" id="large" name="materialExampleRadios" />
-                      <label className="form-check-label small text-uppercase card-link-secondary"
-                        for="large">Large</label>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
         <button type="button" className="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
         {!props.isLoading && <button onClick={onClickAddToCart} type="button" className="btn btn-light btn-md mr-1 mb-2"><i
             className="fas fa-shopping-cart pr-2"></i>Add to cart</button>}
         {props.isLoading && <button type="button" className="btn btn-light btn-md mr-1 mb-2" disabled><i
             className="fas fa-shopping-cart pr-2"></i> Please wait... Adding to cart</button>}
-        {/* <h6 className="text-danger">{props.error?.message}</h6> */}
       </div>
     </div>
   
@@ -160,16 +95,7 @@ const CakeDetails = (props) => {
 }
 
 export default connect((state, props) => {
-  // props.history.listen((location, action) => {
-  //   // console.log(location, action)
-  //   if (action === 'PUSH') {
-  //     state.CartReducer.error = undefined
-  //     state.CartReducer.redirect = undefined
-  //   }
-  // })
-
   if (state.CartReducer.redirect) {
-    // props.dispatch({type: 'CLEAR_REDIRECT'})
     props.history.push(state.CartReducer.redirect)
   }
   return {

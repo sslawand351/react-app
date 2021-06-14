@@ -1,4 +1,6 @@
 import { Component } from "react";
+import { connect, useDispatch } from "react-redux";
+import { withRouter } from "react-router";
 import { signUp } from "../apis/Api";
 
 class SignUp extends Component
@@ -78,7 +80,6 @@ class SignUp extends Component
 
   validateForm = (event) => {
     event.preventDefault();
-    console.log(this.state);
     this.setState({
       fullname: {
         value: this.state.fullname.value,
@@ -101,22 +102,20 @@ class SignUp extends Component
         error: this.state.confirmPassword.value === this.state.password.value ? null : 'Passwords does not match'
       },
     })
+
     if (!this.state.fullname.error && !this.state.email.error && !this.state.role.error &&
       !this.state.password.error && !this.state.confirmPassword.error && this.state.email.value) {
-        console.log(this.state.fullname.value, this.state.email.value)
         signUp({
           name: this.state.fullname.value,
           email: this.state.email.value,
           password: this.state.password.value
         }).then(response => {
-          console.log('signup response', response)
-          // localStorage.user = JSON.stringify(response)
-          // this.props.history.push('/')
+          this.props.dispatch({type: 'USER_REGISTRATION_SUCCESS'})
+          this.props.history.push('/login')
         }, error => {
           console.log(error)
         })
     }
-    console.log(this.state);
   }
 
   render() {
@@ -158,4 +157,4 @@ class SignUp extends Component
   }
 }
 
-export default SignUp
+export default connect()(withRouter(SignUp))

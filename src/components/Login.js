@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { isEmpty, isValidEmail } from "../form-validation";
 import loginMiddleware from "../middleware/login";
 
 function Login(props) {
-  // alert(JSON.stringify(props))
-  // console.log(props)
   if (props.user?.token) {
     props.history.push('/')
   }
 
   let [user, setUser] = useState({
-    email:{value:null, error: null},
-    password:{value:null, error: null}
+    email: {value: null, error: null},
+    password: {value: null, error: null}
   })
 
   const onChangeEmail = (event) => {
@@ -37,34 +35,22 @@ function Login(props) {
     let emailError = isEmpty(user.email.value) || !isValidEmail(user.email.value)
     let passwordError = isEmpty(user.password.value)
     let isValid = !emailError && !passwordError
+
     setUser({
       email: {value:user.email.value, error: emailError},
       password: {value:user.password.value, error: passwordError}
     })
+
     if (isValid) {
       props.dispatch(loginMiddleware(user))
-    
-    // login(user.email.value, user.password.value).then(response => {
-    //   if (!response.token) {
-    //     setLoginErrorMessage(response.message)
-    //   } else {
-    //     props.dispatch({
-    //       type: 'LOGIN',
-    //       payload: {...response}
-    //     })
-    //     localStorage.token = response.token
-    //     props.setLoggedInUser(response)
-    //     props.history.push('/')
-    //   }
-    // }, error => console.log(error))
     }
   }
+
   return (
     <div className="text-center mt-5 mb-5 ml-3 mr-3">
     <form className="form-signin">
       <img className="mb-4" src="/cake-logo.png" alt="" width="72" height="72" />
       <h1 className="h3 mb-3 font-weight-normal">Please log in</h1>
-      {/* <div className="text-danger mb-2"><span>{props.error?.message}</span></div> */}
       <label htmlFor="inputEmail" className="sr-only">Email address</label>
       <input onChange={onChangeEmail} type="email" id="inputEmail" className={user.email.error ? 'form-control is-invalid' : 'form-control'} placeholder="Email address" required="" autoFocus="" />
       <label htmlFor="inputPassword" className="sr-only">Password</label>
@@ -80,8 +66,6 @@ function Login(props) {
 
 export default connect((state, props) => {
   return {
-    ...state.AuthReducer,
-    redirect: state.CartReducer.redirect,
-    message: state.CartReducer.message
+    ...state.AuthReducer
   }
 })(withRouter(Login))

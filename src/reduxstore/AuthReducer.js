@@ -2,23 +2,45 @@ function AuthReducer(state={}, action) {
   console.log(action)
   state.message = null
   switch (action.type) {
+    case 'USER_REGISTRATION_SUCCESS':
+      return {
+        ...state,
+        message:'You are successfully registered. We have sent email to your email address. Please verify your email address to login'
+      }
     case 'LOGIN_INIT':
-      console.log(action)
-      state = {...state, isLoading: true}
-      return state
+      return {...state, isLoading: true}
+
     case 'LOGIN_SUCCESS':
-      state = {...state, user: {...action.payload}, message: 'You are logged in successfully', isLoading: false}
-      return state
+      return {
+        ...state,
+        user: {...action.payload},
+        message: 'You are logged in successfully',
+        isLoading: false
+      }
     case 'GET_USER_BY_TOKEN_SUCCESS':
-      return {...state, user: {...action.payload}, message: null, isLoading: false}
+      return {
+        ...state,
+        user: {...action.payload},
+        message: null,
+        isLoading: false
+      }
     case 'GET_USER_BY_TOKEN_FAILURE':
-      return {...state, error: {...action.payload}, message: null, isLoading: false}
+      return {
+        ...state,
+        error: {...action.payload},
+        message: null,
+        isLoading: false
+      }
     case 'LOGIN_FAILURE':
-      state = {...state, error: {...action.payload}, message: action.payload.message || 'Error occurred while login', isLoading: false}
-      return state
+      return {
+        ...state,
+        error: {...action.payload},
+        message: action.payload.message || 'Error occurred while login',
+        isLoading: false
+      }
     case 'LOGOUT':
-      state = {...state, user: {}, message: 'You are logged out successfully'}
-      return state
+      return {...state, user: {}, message: 'You are logged out successfully'}
+
     default: return state
   }
 }

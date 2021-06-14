@@ -4,20 +4,24 @@ import Loader from "./Loader"
 
 function Orders() {
   let [orders, setOrders] = useState()
+
   useEffect(()=> {
     getOrders(localStorage.token).then(response => {
       setOrders(response.cakeorders)
     })
   }, [])
+
   if (!orders) {
     return <Loader text="Please wait loading cake orders" />
   }
+
   return <div className="container mt-5 mb-5">
     <h2>My Orders</h2>
     <div className="card">
       <div className="row">
-        <div className="col-md-12">
-        <table class="table table-striped">
+        <div className="col-md-12 table-responsive">
+        <div class="table-responsive">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">Order</th>
@@ -37,11 +41,11 @@ function Orders() {
               <td>&#x20B9; {order.price}</td>
               <td>{order.pending ? 'Pending' : 'Completed'}</td>
               <td>{order.orderdate}</td>
-              {/* <td><pre>{JSON.stringify(order, null, 2)}</pre></td> */}
             </tr>
           })}
           </tbody>
         </table>
+        </div>
         </div>
       </div>
     </div>

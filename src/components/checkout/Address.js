@@ -6,14 +6,32 @@ function Address(props) {
   const addAddress = (event) => {
     event.preventDefault()
     let isValid = !isEmpty(props.address.fullname.value) && !isEmpty(props.address.phone.value) &&
-      !isEmpty(props.address.addressLine.value) && !isEmpty(props.address.city.value) && !isEmpty(props.address.pincode.value)
+      !isEmpty(props.address.addressLine.value) && !isEmpty(props.address.city.value) &&
+      !isEmpty(props.address.pincode.value)
+
     props.setAddress({
-      fullname: {value:props.address.fullname.value, error: isEmpty(props.address.fullname.value) ? 'Please enter fullname': null},
-      phone: {value:props.address.phone.value, error: isEmpty(props.address.phone.value) ? 'Please enter phone': null},
-      addressLine: {value:props.address.addressLine.value, error: isEmpty(props.address.addressLine.value) ? 'Please enter address line': null},
-      city: {value:props.address.city.value, error: isEmpty(props.address.city.value) ? 'Please enter city': null},
-      pincode: {value:props.address.pincode.value, error: isEmpty(props.address.pincode.value) ? 'Please enter pincode': null},
+      fullname: {
+        value: props.address.fullname.value,
+        error: isEmpty(props.address.fullname.value) ? 'Please enter fullname': null
+      },
+      phone: {
+        value: props.address.phone.value,
+        error: isEmpty(props.address.phone.value) ? 'Please enter phone': null
+      },
+      addressLine: {
+        value:props.address.addressLine.value,
+        error: isEmpty(props.address.addressLine.value) ? 'Please enter address line': null
+      },
+      city: {
+        value:props.address.city.value,
+        error: isEmpty(props.address.city.value) ? 'Please enter city': null
+      },
+      pincode: {
+        value:props.address.pincode.value,
+        error: isEmpty(props.address.pincode.value) ? 'Please enter pincode': null
+      },
     })
+
     if (isValid) {
       props.dispatch({type: 'CART_SET_ADDRESS', payload: {
         fullname: props.address.fullname.value,
@@ -104,7 +122,6 @@ function Address(props) {
       <button onClick={addAddress} type="submit" className="btn btn-dark btn-block">Add Address</button>
       </div>
     </form>
-        
   </>
 }
 
