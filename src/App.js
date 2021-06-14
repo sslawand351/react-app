@@ -8,15 +8,12 @@ import Login from './components/Login'
 import Search from './components/Search'
 import CakeDetails from './components/CakeDetails'
 import Cart from './components/Cart'
-import { useEffect, useState } from 'react'
-import { getUserByToken } from './apis/Api'
+import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import loginMiddleware from './middleware/login'
 import { AuthMiddleware } from './middleware/auth'
 import { cartMiddleware } from './middleware/cart'
 import Checkout from './components/Checkout'
 import { PopupMessage } from './components/PopupMessage'
-import { createBrowserHistory } from "history";
 import Orders from './components/Orders'
 
 var data = {
@@ -25,7 +22,6 @@ var data = {
 }
 function App(props) {
   // console.log(props.history)
-  let [prevPath, setPrevPath] = useState({current: props.history.location.pathname, prev: props.history.location.pathname})
   // console.log(prevPath)
   // let [user, setLoggedInUser] = useState()
   // console.log('token', props)
@@ -45,7 +41,7 @@ function App(props) {
     if (localStorage.token) {
       props.dispatch(AuthMiddleware({token: localStorage.token}))
     }
-  }, [props.user?.token])
+  }, [])
 
   useEffect(() => {
     if (localStorage.token) {
@@ -66,11 +62,12 @@ function App(props) {
   return <>
     <Router>
     {props.authMessage && <PopupMessage message={props.authMessage}/>}
-      <Navbar data={data} logout={logout} user={props.user} prevPath={prevPath} setPrevPath={setPrevPath}/>
+    {props.cartMessage && <PopupMessage message={props.cartMessage}/>}
+      <Navbar data={data} logout={logout} user={props.user} cartItemsCount={props.cartItemsCount} />
       <Switch>
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/signup">{props.user?.token ? <Redirect to="/" /> : <SignUp />}</Route>
-        <Route exact path="/login">{props.user?.token ? <Redirect to="/" /> : <Login prevPath={prevPath.prev} />}</Route>
+        <Route exact path="/login">{props.user?.token ? <Redirect to="/" /> : <Login />}</Route>
         <Route exact path="/search" component={Search}></Route>
         <Route exact path="/cake/:id" component={CakeDetails}></Route>
         <Route exact path="/cart">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Cart />}</Route>
@@ -91,7 +88,9 @@ const mapStateToProps = (state, props) => {
   // console.log(state.CartReducer.message)
   return {
     ...state.AuthReducer,
-    authMessage: state.AuthReducer.message
+    authMessage: state.AuthReducer.message,
+    cartMessage: state.CartReducer.message,
+    cartItemsCount: state.CartReducer?.cart?.items?.length || 0
   }
 }
 export default connect(mapStateToProps)(App)

@@ -8,13 +8,13 @@ export const AuthMiddleware = user => {
           dispatch({type: 'GET_USER_BY_TOKEN_SUCCESS', payload: {...response}})
         } else {
           dispatch({
-            type: 'LOGIN_FAILURE',
+            type: 'GET_USER_BY_TOKEN_FAILURE',
             payload: {...response}
           })
         }
       }, error => {
         dispatch({
-          type: 'LOGIN_FAILURE',
+          type: 'GET_USER_BY_TOKEN_FAILURE',
           payload: {...error}
         })
       })

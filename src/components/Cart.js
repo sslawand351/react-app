@@ -1,25 +1,30 @@
 import { useEffect } from "react"
 import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom"
-import { addToCartMiddleware, cartMiddleware, removeCakeFromCartMiddleware, removeOneCakeFromCartMiddleware } from "../middleware/cart"
+import { addToCartMiddleware, removeCakeFromCartMiddleware, removeOneCakeFromCartMiddleware } from "../middleware/cart"
 import { PopupMessage } from "./PopupMessage"
 
 function Cart(props) {
-  useEffect(() => {
-    props.dispatch(cartMiddleware(localStorage.token))
-  }, [props.cart.totalQty])
+  // useEffect(() => {
+  //   props.dispatch(cartMiddleware(localStorage.token))
+  // }, [props.cart.totalQty])
 
   // if (!props.cart.items.length) {
   //   props.dispatch({type: 'CART_IS_EMPTY'})
   //   props.history.push('/')
   // }
-  console.log(props.cart.items)
+  useEffect(() => {
+    if (props.redirect) {
+      props.dispatch({type: 'CLEAR_REDIRECT'})
+    }
+  }, [props.redirect])
+  // console.log(props.cart.items)
   const removeFromCart = (event) => {
-    let cakeid = JSON.parse(event.target.getAttribute('data-cakeid'))
+    let cakeid = event.target.getAttribute('data-cakeid')
     props.dispatch(removeCakeFromCartMiddleware(localStorage.token, cakeid))
   }
   const decreaseQty = (event) => {
-    let cakeid = JSON.parse(event.target.getAttribute('data-cakeid'))
+    let cakeid = event.target.getAttribute('data-cakeid')
     props.dispatch(removeOneCakeFromCartMiddleware(localStorage.token, cakeid))
   }
   const increaseQty = (event) => {
@@ -49,12 +54,12 @@ function Cart(props) {
               </div>
               {props.cart.items.map((item, index) => {
                 let className = index%2 ? "row m-0" : "row m-0 border-top border-bottom"
-                if (props.cart.items.length == index + 1 && index%2 != 0) {
+                if (props.cart.items.length === index + 1 && index%2 !== 0) {
                   className = "row m-0 border-bottom"
                 }
                 return <div className={className} key={index}>
                   <div className="row main align-items-center">
-                      <div className="col-2"><img className="" src={item.image} width="60" height="60" /></div>
+                      <div className="col-2"><img className="" src={item.image} alt="" width="60" height="60" /></div>
                       <div className="col">
                           {/* <div className="row text-muted">Shirt</div> */}
                           <div className="row">{item.name}</div>

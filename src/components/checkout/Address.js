@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { connect } from "react-redux"
 import { withRouter } from "react-router"
 import { isEmpty } from "../../form-validation"
@@ -67,8 +66,16 @@ function Address(props) {
     })
   }
   return <>
+  <div className="title">
+      <div className="row m-0">
+          <div className="col">
+              <h4><b>Order Address</b></h4>
+          </div>
+      </div>
+  </div>
+  <hr />
   <form className="form">
-  <h4 >Address Page</h4>
+    <div className="col">
       <div className={props.address.fullname.error ? 'form-group text-danger' : 'form-group'}>
         <label htmlFor="fullName">Fullname</label>
         <input onChange={validateFullname} type="text" className={props.address.fullname.error ? 'form-control is-invalid' : 'form-control'} id="fullname" placeholder="Fullname" value={props.address.fullname.value}/>
@@ -95,6 +102,7 @@ function Address(props) {
         {props.address.pincode.error}
       </div>
       <button onClick={addAddress} type="submit" className="btn btn-dark btn-block">Add Address</button>
+      </div>
     </form>
         
   </>

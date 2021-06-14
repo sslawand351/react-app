@@ -11,6 +11,8 @@ function AuthReducer(state={}, action) {
       return state
     case 'GET_USER_BY_TOKEN_SUCCESS':
       return {...state, user: {...action.payload}, message: null, isLoading: false}
+    case 'GET_USER_BY_TOKEN_FAILURE':
+      return {...state, error: {...action.payload}, message: null, isLoading: false}
     case 'LOGIN_FAILURE':
       state = {...state, error: {...action.payload}, message: action.payload.message || 'Error occurred while login', isLoading: false}
       return state

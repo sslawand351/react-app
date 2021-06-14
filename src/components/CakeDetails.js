@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { useParams, withRouter } from "react-router"
-import { addToCart, getCakeById } from "../apis/Api"
+import { getCakeById } from "../apis/Api"
 import { addToCartMiddleware } from "../middleware/cart"
 import Loader from "./Loader"
 
@@ -9,10 +9,10 @@ const CakeDetails = (props) => {
   let cakeParams = useParams()
   let [cake, setCake] = useState()
   // let [message, setErrorMessage] = useState()
-  if (props.redirect) {
-    props.dispatch({type: 'CLEAR_MESSAGE'})
-    props.history.push(props.redirect)
-  }
+  // if (props.redirect) {
+  //   props.dispatch({type: 'CLEAR_REDIRECT'})
+  //   props.history.push(props.redirect)
+  // }
   console.log('cake props', props)
 
   const onClickAddToCart = (event) => {
@@ -152,7 +152,7 @@ const CakeDetails = (props) => {
             className="fas fa-shopping-cart pr-2"></i>Add to cart</button>}
         {props.isLoading && <button type="button" className="btn btn-light btn-md mr-1 mb-2" disabled><i
             className="fas fa-shopping-cart pr-2"></i> Please wait... Adding to cart</button>}
-        <h6 className="text-danger">{props.error?.message}</h6>
+        {/* <h6 className="text-danger">{props.error?.message}</h6> */}
       </div>
     </div>
   
@@ -160,17 +160,18 @@ const CakeDetails = (props) => {
 }
 
 export default connect((state, props) => {
-  props.history.listen((location, action) => {
-    console.log(location, action)
-    if (action === 'PUSH') {
-      state.CartReducer.error = undefined
-      state.CartReducer.redirect = undefined
-    }
-  })
+  // props.history.listen((location, action) => {
+  //   // console.log(location, action)
+  //   if (action === 'PUSH') {
+  //     state.CartReducer.error = undefined
+  //     state.CartReducer.redirect = undefined
+  //   }
+  // })
 
-  // if (state.CartReducer.redirect) {
-  //   props.history.push(state.CartReducer.redirect)
-  // }
+  if (state.CartReducer.redirect) {
+    // props.dispatch({type: 'CLEAR_REDIRECT'})
+    props.history.push(state.CartReducer.redirect)
+  }
   return {
     ...state.CartReducer
   }

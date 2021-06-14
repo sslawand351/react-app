@@ -1,28 +1,20 @@
 import { useEffect, useState } from "react"
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { login } from "../apis/Api";
 import { isEmpty, isValidEmail } from "../form-validation";
 import loginMiddleware from "../middleware/login";
-import { PopupMessage } from "./PopupMessage";
 
 function Login(props) {
   // alert(JSON.stringify(props))
-  console.log(props)
+  // console.log(props)
   if (props.user?.token) {
     props.history.push('/')
   }
 
-  // useEffect(() => {
-  //   if (props.redirect != '/login') {
-  //     props.dispatch({type:'CLEAR_MESSAGE'})
-  //   }
-  // }, [props.history.location.pathname]);
   let [user, setUser] = useState({
     email:{value:null, error: null},
     password:{value:null, error: null}
   })
-  let [loginErrorMessage, setLoginErrorMessage] = useState('')
 
   const onChangeEmail = (event) => {
     let email = event.target.value.trim()
@@ -50,7 +42,6 @@ function Login(props) {
       password: {value:user.password.value, error: passwordError}
     })
     if (isValid) {
-      console.log('Valid')
       props.dispatch(loginMiddleware(user))
     
     // login(user.email.value, user.password.value).then(response => {
@@ -68,8 +59,6 @@ function Login(props) {
     // }, error => console.log(error))
     }
   }
-  console.log(props.prevPath)
-  console.log(props.prevPath.match(/cake|cart|checkout/g))
   return (
     <div className="text-center mt-5 mb-5 ml-3 mr-3">
     <form className="form-signin">
@@ -90,9 +79,6 @@ function Login(props) {
 }
 
 export default connect((state, props) => {
-  // let message = props.message == state.CartReducer.message && props.history?.action == 'PUSH'
-    // ? state.CartReducer.message: null
-
   return {
     ...state.AuthReducer,
     redirect: state.CartReducer.redirect,

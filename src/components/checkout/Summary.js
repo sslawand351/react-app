@@ -1,7 +1,5 @@
-import { useEffect } from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
-import { addToCartMiddleware, cartMiddleware, removeCakeFromCartMiddleware, removeOneCakeFromCartMiddleware } from "../../middleware/cart"
 
 function Summary(props) {
 
@@ -16,12 +14,12 @@ function Summary(props) {
         </div>
         {props.cart.items.map((item, index) => {
           let className = index%2 ? "row m-0" : "row m-0 border-top border-bottom"
-          if (props.cart.items.length == index + 1 && index%2 != 0) {
+          if (props.cart.items.length === index + 1 && index%2 !== 0) {
             className = "row m-0 border-bottom"
           }
-          return <div className={className}>
+          return <div className={className} key={index}>
             <div className="row main align-items-center">
-                <div className="col-2"><img className="" src={item.image} width="60" height="60" /></div>
+                <div className="col-2"><img className="" src={item.image} alt="" width="60" height="60" /></div>
                 <div className="col">
                     {/* <div className="row text-muted">Shirt</div> */}
                     <div className="row">{item.name}</div>
@@ -31,7 +29,9 @@ function Summary(props) {
             </div>
           </div>
         })}
-        <Link to="/checkout/address"><button className="btn btn-dark">Next</button></Link>
+        <br />
+        <br />
+        <Link to="/checkout/address"><button className="btn btn-dark btn-block">Next</button></Link>
         {/* <div className="back-to-shop"><a href="#">&#8592;</a><span className="text-muted">Back to shop</span></div> */}
   </>
 }

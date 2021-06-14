@@ -7,17 +7,19 @@ function CartReducer(state={
     }
 }, action) {
     let cart, cartItem, cartItemIndex
-    state.message = null
+    // state.message = null
     switch (action.type) {
-        case 'CART_IS_EMPTY': return {...state, message: 'Your cart is empty. please add cake to your cart to checkout'}
+        case 'CART_IS_EMPTY': return {...state, message: 'Your cart is empty. please add cake to your cart'}
         case 'CLEAR_MESSAGE': return {...state, message: null}
         case 'CLEAR_REDIRECT': return {...state, redirect: null}
+        case 'RESET_NEWORDER': return {...state, newOrder: null}
         case 'ADD_TO_CART_REQUEST_INIT':
             return {...state, isLoading: true}
         case 'ADD_TO_CART_SUCCESS':
             cart = {...state.cart}
-            cart.totalQty += 1 
-            if (cartItem = cart.items.find(newItem => newItem.cakeid === action.payload.data.cakeid)) {
+            cart.totalQty += 1
+            cartItem = cart.items.find(newItem => newItem.cakeid === action.payload.data.cakeid)
+            if (cartItem) {
                 cartItem.price += (action.payload.data.price/cartItem.quantity)
                 cartItem.quantity += 1
                 cart.totalPrice += cartItem.price/cartItem.quantity
@@ -42,7 +44,7 @@ function CartReducer(state={
         case 'REMOVE_ONE_CAKE_FROM_CART_SUCCESS':
             cart = {...state.cart}
             // find index of cart item matches cakeid
-            cartItemIndex = cart.items.findIndex(newItem => newItem.cakeid == action.payload.cakeid)
+            cartItemIndex = cart.items.findIndex(newItem => newItem.cakeid === action.payload.cakeid)
             // assign cart item of position cartItemIndex from cart items array
             cartItem = cart.items[cartItemIndex] ?? null;
             if (!cartItem) {
@@ -61,7 +63,7 @@ function CartReducer(state={
             cart.totalPrice -= (cartItem.price/cartItem.quantity)
             cart.totalQty -= 1
             // if cart item qty is 1 then remove cart item else update qty and price
-            if (cartItem.quantity == 1) {
+            if (cartItem.quantity === 1) {
                 cart.items.splice(cartItemIndex, 1);
             } else {
                 cartItem.price -= (cartItem.price/cartItem.quantity)
@@ -80,7 +82,7 @@ function CartReducer(state={
         case 'REMOVE_CAKE_FROM_CART_SUCCESS':
             cart = {...state.cart}
             // find index of cart item matches cakeid
-            cartItemIndex = cart.items.findIndex(newItem => newItem.cakeid == action.payload.cakeid)
+            cartItemIndex = cart.items.findIndex(newItem => newItem.cakeid === action.payload.cakeid)
             // assign cart item of position cartItemIndex from cart items array
             cartItem = cart.items[cartItemIndex] ?? null;
             if (!cartItem) {
@@ -122,7 +124,7 @@ function CartReducer(state={
                 totalPrice: 0,
                 totalQty: 0
             }
-            return {...state, cart: cart, order:{...action.payload.order}, message: action.payload.message, orderCreationInit: false}
+            return {...state, cart: cart, newOrder:{...action.payload.order}, message: action.payload.messageg, orderCreationInit: false}
         case 'ORDER_CREATION_FAILURE':
             return {...state, orderCreationInit: false}
         default: return state
@@ -132,8 +134,8 @@ function CartReducer(state={
 const updateCartItemQty = (cart, item) => {
     cart.totalPrice += item.price
     cart.totalQty += item.quantity
-    let cartItem
-    if (cartItem = cart.items.find(newItem => newItem.cakeid === item.cakeid)) {
+    let cartItem = cart.items.find(newItem => newItem.cakeid === item.cakeid)
+    if (cartItem) {
         cartItem.quantity += item.quantity
         cartItem.price += item.price
         return cart

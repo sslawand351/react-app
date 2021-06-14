@@ -1,4 +1,4 @@
-import { getUserByToken, login } from "../apis/Api"
+import { login } from "../apis/Api"
 
 const loginMiddleware = user => {
   return dispatch => {
