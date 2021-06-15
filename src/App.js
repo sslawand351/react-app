@@ -20,6 +20,7 @@ var data = {
   projectName: "Cake Shop",
   userName: "Sagar",
 }
+
 function App(props) {
   useEffect(() => {
     if (localStorage.token) {

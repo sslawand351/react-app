@@ -25,8 +25,20 @@ const CakeDetails = (props) => {
 
   useEffect(() => {
     getCakeById(cakeParams.id)
-      .then(response => setCake(response), error => console.log(error))
+      .then(response => {
+        document.title = response.name + ' | Cake Shop'
+        setCake(response)
+      }, error => console.log(error))
   }, [cakeParams.id])
+
+  // useEffect(() => {
+  //   console.log(cake?.name)
+  //   if (cake?.name) {
+  //     // let title = document.title
+  //     // title.replace('cake-name', cake.name)
+  //     document.title = cake.name + ' | Cake Shop'
+  //   }
+  // }, [props.location.pathname])
 
   if (!cake) {
     return <Loader text="Please wait loading cake" />
@@ -83,7 +95,7 @@ const CakeDetails = (props) => {
           </table>
         </div>
         <hr />
-        <button type="button" className="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
+        {/* <button type="button" className="btn btn-primary btn-md mr-1 mb-2">Buy now</button> */}
         {!props.isLoading && <button onClick={onClickAddToCart} type="button" className="btn btn-light btn-md mr-1 mb-2"><i
             className="fas fa-shopping-cart pr-2"></i>Add to cart</button>}
         {props.isLoading && <button type="button" className="btn btn-light btn-md mr-1 mb-2" disabled><i

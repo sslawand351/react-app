@@ -1,9 +1,42 @@
+import { useEffect } from "react"
 import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom"
 
 function Navbar(props) {
   let searchString
   let searchFor = 'Enter the search keyword'
+
+  useEffect(() => {
+    const titleGroups = [
+      {url: 'login', title: 'Login | ' + props.data.projectName},
+      // {url: '/', title: data.projectName},
+      {url: 'signup', title: 'Sign Up | ' + props.data.projectName},
+      {url: 'cake', title: 'cake-name | ' + props.data.projectName},
+      {url: 'cart', title: 'Shopping Cart | ' + props.data.projectName},
+      // {url: 'checkout', title: 'Checkout | ' + props.data.projectName},
+      {url: 'orders', title: 'My Orders | ' + props.data.projectName},
+      {url: 'summary', title: 'Order Summary | Checkout | ' + props.data.projectName},
+      {url: 'address', title: 'Order Address | Checkout | ' + props.data.projectName},
+      {url: 'confirm', title: 'Order Confirmation | Checkout | ' + props.data.projectName},
+      {url: 'search', title: 'Search Result for search-keyword | ' + props.data.projectName},
+    ]
+    const updateTitle = () => {
+      let grp = titleGroups.find(grp => {
+        let regex = new RegExp(grp.url,"g")
+        return props.location.pathname.match(regex)
+      })
+      // console.log(grp)
+      // let title = grp.title
+      if (!grp) {
+        document.title = props.data.projectName
+      }
+      if (grp && ['cake', 'search'].indexOf(grp.url) === -1) {
+        // console.log(grp.url)
+        document.title = grp ? grp.title : props.data.projectName
+      }
+    }
+    updateTitle()
+  }, [props.location.pathname])
 
   const search = (event) => {
     event.preventDefault()

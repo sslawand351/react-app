@@ -11,6 +11,7 @@ function Search (props) {
 
   useEffect(() => {
     getCakesBySearchKeyword(query.q).then((response) => {
+      document.title = 'Search result for ' + query.q + ' | Cake Shop'
       setCakes(response)
     }, (error) => {
       console.log('cakes error', error);

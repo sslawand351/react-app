@@ -20,8 +20,8 @@ function Orders() {
     <div className="card">
       <div className="row">
         <div className="col-md-12 table-responsive">
-        <div class="table-responsive">
-        <table class="table">
+        <div className="table-responsive">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">Order</th>

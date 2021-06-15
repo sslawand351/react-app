@@ -1,5 +1,5 @@
 function AuthReducer(state={}, action) {
-  console.log(action)
+  // console.log(action)
   state.message = null
   switch (action.type) {
     case 'USER_REGISTRATION_SUCCESS':
