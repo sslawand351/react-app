@@ -6,3 +6,4 @@ export const isEmpty = val => {
     }
     return !val || !val.length
 }
+export const isNumber = val => isNaN(parseFloat(val))

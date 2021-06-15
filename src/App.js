@@ -15,6 +15,8 @@ import { cartMiddleware } from './middleware/cart'
 import Checkout from './components/Checkout'
 import { PopupMessage } from './components/PopupMessage'
 import Orders from './components/Orders'
+import Footer from './components/Footer'
+import AddCake from './components/cake/AddCake'
 
 var data = {
   projectName: "Cake Shop",
@@ -22,6 +24,7 @@ var data = {
 }
 
 function App(props) {
+  let adminUsers = ['ashu.lekhi0540@gmail.com', 'sagar.lawand@neosoftmail.com']
   useEffect(() => {
     if (localStorage.token) {
       props.dispatch(AuthMiddleware({token: localStorage.token}))
@@ -45,7 +48,7 @@ function App(props) {
     <Router>
     {props.authMessage && <PopupMessage message={props.authMessage}/>}
     {props.cartMessage && <PopupMessage message={props.cartMessage}/>}
-      <Navbar data={data} logout={logout} user={props.user} cartItemsCount={props.cartItemsCount} />
+      <Navbar data={data} logout={logout} user={props.user} adminUsers={adminUsers} cartItemsCount={props.cartItemsCount} />
       <Switch>
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/signup">{props.user?.token ? <Redirect to="/" /> : <SignUp />}</Route>
@@ -55,8 +58,10 @@ function App(props) {
         <Route exact path="/cart">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Cart />}</Route>
         <Route path="/checkout">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Checkout />}</Route>
         <Route exact path="/orders">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Orders />}</Route>
+        {props.user?.email && adminUsers.indexOf(props.user?.email) !== -1 && <Route exact path="/admin/cake/add">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <AddCake />}</Route>}
         <Route path="/*" component={PageNotFound}></Route>
       </Switch>
+      <Footer projectName={data.projectName} />
     </Router>
   </>
 }

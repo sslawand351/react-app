@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 axios.interceptors.request.use(request => {
-  if (request.url.includes('cart')) {
+  if (request.method == 'post') {
     request.headers.authtoken = localStorage.token
   }
   return request
@@ -92,4 +92,20 @@ export const createOrder = (token, cart, address) => {
 export const getOrders = (token) => {
   return axios({method:"post", url: process.env.REACT_APP_CAKE_API_URL + "cakeorders", headers: {authtoken: token}})
     .then(response => response.data, error => [])
+}
+
+export const cakeImageUpload = (formData) => {
+  return axios({
+    url: process.env.REACT_APP_CAKE_API_URL + 'upload',
+    method: 'post',
+    data: formData
+  }).then(response => response.data, err => [])
+}
+
+export const addNewCake = (action) => {
+  return axios({
+    url: process.env.REACT_APP_CAKE_API_URL + 'addcake',
+    method: "post",
+    data: action.payload || {}
+  })
 }

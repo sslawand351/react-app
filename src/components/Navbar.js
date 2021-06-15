@@ -77,6 +77,7 @@ function Navbar(props) {
           <button onClick={search} className="btn btn-outline-success my-2 my-sm-0 search-button" type="submit"><i className="fa fa-search"></i></button>
         </form>
         {props.user?.token && <Link to="/orders"><span className="nav-link">My Orders</span></Link>}
+        {props.user?.token && props.adminUsers.indexOf(props.user?.email) !== -1 && <Link to="/admin/cake/add"><span className="nav-link">Add New Cake</span></Link>}
         {props.user?.token && <span onClick={() => props.logout()} className="nav-link">Log out</span>}
         {!props.user?.token && <Link to="/signup"><span className="nav-link">SignUp</span></Link>}
         {!props.user?.token && <Link to="/login"><span className="nav-link">Login</span></Link>}

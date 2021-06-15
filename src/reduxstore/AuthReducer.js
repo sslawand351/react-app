@@ -41,6 +41,10 @@ function AuthReducer(state={}, action) {
     case 'LOGOUT':
       return {...state, user: {}, message: 'You are logged out successfully'}
 
+    // TODO: move this action to cake Reducer 
+    case 'ADD_CAKE_SUCCESS':
+      return {...state, message: 'Cake added successfully'}
+
     default: return state
   }
 }

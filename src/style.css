@@ -362,3 +362,19 @@ a {
 .modal.show {
   display: block;
 }
+.orders .card {
+  margin-bottom: 5px;
+}
+.orders .card-header, .orders .btn-link {
+  background-color: rgb(43 37 37);
+  color: #fff;
+  border: none;
+}
+.orders .card-header button {
+  text-decoration: none;
+  box-shadow: none;
+}
+.orders .btn-link:active, .orders .btn-link:focus {
+  border: none;
+  box-shadow: none;
+}

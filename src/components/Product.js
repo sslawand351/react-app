@@ -14,7 +14,7 @@ function Product(props) {
         <div className="card-body">
           <h6 className="card-title">{props.product.name}</h6>
           <p className="card-text"><span className="currency">₹&nbsp;</span>{props.product.price}</p>
-          {props.product.description && <span>{props.product.description}</span>}
+          {/* {props.product.description && <span>{props.product.description}</span>} */}
           {props.product.discount && <span>Discount: {props.product.discount}</span>}
         </div>
       </div>
