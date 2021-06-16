@@ -4,8 +4,10 @@ import { Link } from "react-router-dom"
 function PageNotFound() {
   return (
     <React.Fragment>
-      <h2>Page Not Found</h2>
-      <Link to="/"><button className="btn btn-primary">Click here to go to Home page</button></Link>
+      <div className="container mt-5 mb-5 div-404">
+        <img className="img-404" src="/404.jpg" alt="Page not found" />
+        <Link to="/" className="link-404"><span>Click here to go to Home page</span></Link>
+      </div>
     </React.Fragment>
   )
 }

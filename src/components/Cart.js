@@ -2,6 +2,8 @@ import { useEffect } from "react"
 import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom"
 import { addToCartMiddleware, removeCakeFromCartMiddleware, removeOneCakeFromCartMiddleware } from "../middleware/cart"
+import FullLoader from "./FullLoader"
+import NoRecordFound from "./NoRecordFound"
 import { PopupMessage } from "./PopupMessage"
 
 function Cart(props) {
@@ -34,6 +36,7 @@ function Cart(props) {
   }
 
   return <>
+  {!props.loader && props.isLoading && <FullLoader text="Please wait..." class="cart-loader" />}
   {props.message && <PopupMessage message={props.message} qty={props.cart.totalQty}/>}
   <div className="container mt-5 mb-5">
     <div className="cart-block card">
@@ -47,7 +50,7 @@ function Cart(props) {
                       <div className="col align-self-center text-right text-muted">{props.cart.items.length} items</div>
                   </div>
               </div>
-              {props.cart.items.map((item, index) => {
+              {props.cart.items.length === 0 ? <NoRecordFound text="Your cart is empty" />: props.cart.items.map((item, index) => {
                 let className = index%2 ? "row m-0" : "row m-0 border-top border-bottom"
                 if (props.cart.items.length === index + 1 && index%2 !== 0) {
                   className = "row m-0 border-bottom"

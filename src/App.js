@@ -8,7 +8,7 @@ import Login from './components/Login'
 import Search from './components/Search'
 import CakeDetails from './components/CakeDetails'
 import Cart from './components/Cart'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { AuthMiddleware } from './middleware/auth'
 import { cartMiddleware } from './middleware/cart'
@@ -17,6 +17,7 @@ import { PopupMessage } from './components/PopupMessage'
 import Orders from './components/Orders'
 import Footer from './components/Footer'
 import AddCake from './components/cake/AddCake'
+import FullLoader from './components/FullLoader'
 
 var data = {
   projectName: "Cake Shop",
@@ -24,11 +25,15 @@ var data = {
 }
 
 function App(props) {
+  let [loader, setLoader] = useState(true)
   let adminUsers = ['ashu.lekhi0540@gmail.com', 'sagar.lawand@neosoftmail.com']
   useEffect(() => {
     if (localStorage.token) {
       props.dispatch(AuthMiddleware({token: localStorage.token}))
     }
+    setTimeout(() => {
+      setLoader(false)
+    }, 1000)
   }, [])
 
   useEffect(() => {
@@ -42,10 +47,11 @@ function App(props) {
     props.dispatch({
       type: 'LOGOUT'
     })
-  } 
+  }
 
   return <>
     <Router>
+      {loader && <FullLoader main="Welcome to Cake Shop" />}
     {props.authMessage && <PopupMessage message={props.authMessage}/>}
     {props.cartMessage && <PopupMessage message={props.cartMessage}/>}
       <Navbar data={data} logout={logout} user={props.user} adminUsers={adminUsers} cartItemsCount={props.cartItemsCount} />
@@ -55,7 +61,7 @@ function App(props) {
         <Route exact path="/login">{props.user?.token ? <Redirect to="/" /> : <Login />}</Route>
         <Route exact path="/search" component={Search}></Route>
         <Route exact path="/cake/:id" component={CakeDetails}></Route>
-        <Route exact path="/cart">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Cart />}</Route>
+        <Route exact path="/cart">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Cart loader={loader} />}</Route>
         <Route path="/checkout">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Checkout />}</Route>
         <Route exact path="/orders">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <Orders />}</Route>
         {props.user?.email && adminUsers.indexOf(props.user?.email) !== -1 && <Route exact path="/admin/cake/add">{!props.user?.token && !localStorage.token ? <Redirect to="/" /> : <AddCake />}</Route>}

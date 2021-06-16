@@ -2,6 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { signUp } from "../apis/Api";
+import { isEmpty, isValidEmail } from "../form-validation";
 
 class SignUp extends Component
 {
@@ -103,8 +104,9 @@ class SignUp extends Component
       },
     })
 
-    if (!this.state.fullname.error && !this.state.email.error && !this.state.role.error &&
-      !this.state.password.error && !this.state.confirmPassword.error && this.state.email.value) {
+    if (!isEmpty(this.state.email.value) && isValidEmail(this.state.email.value) &&
+      !isEmpty(this.state.fullname.value) && !isEmpty(this.state.password.value) && 
+      this.state.confirmPassword.value === this.state.password.value) {
         signUp({
           name: this.state.fullname.value,
           email: this.state.email.value,

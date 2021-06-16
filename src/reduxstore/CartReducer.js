@@ -16,7 +16,7 @@ function CartReducer(state={
     case 'CLEAR_MESSAGE': return {...state, message: null}
     case 'CLEAR_REDIRECT': return {...state, redirect: null}
     case 'RESET_NEWORDER': return {...state, newOrder: null}
-    case 'ADD_TO_CART_REQUEST_INIT': return {...state, isLoading: true}
+    case 'CART_REQUEST_PROCESSING_INIT': return {...state, isLoading: true}
 
     case 'ADD_TO_CART_SUCCESS':
       cart = {...state.cart}
@@ -42,7 +42,8 @@ function CartReducer(state={
         isLoading: false,
         cakeAddedToCart: true,
         message: 'Cake added to cart successfully',
-        redirect: '/cart'
+        redirect: '/cart',
+        isLoading: false
       }
     case 'ADD_TO_CART_FAILURE':
       return {...state, ...action.payload, isLoading: false}
@@ -79,13 +80,14 @@ function CartReducer(state={
       }
 
       return {
-          ...state,
-          cart:cart,
-          response:{
-              success:true,
-              message: 'Cake qty updated to cart successfully'
-          },
-          message: 'Cake qty updated to cart successfully'
+        ...state,
+        cart:cart,
+        response:{
+            success:true,
+            message: 'Cake qty updated to cart successfully'
+        },
+        message: 'Cake qty updated to cart successfully',
+        isLoading: false
       }
     case 'REMOVE_CAKE_FROM_CART_SUCCESS':
       cart = {...state.cart}
@@ -118,11 +120,12 @@ function CartReducer(state={
           success:true,
           message: 'Cake removed from cart successfully'
         },
-        message: 'Cake removed from cart successfully'
+        message: 'Cake removed from cart successfully',
+        isLoading: false
       }
     case 'LOAD_CART':
       cart = action.payload.data.reduce(updateCartItemQty, {items:[], totalPrice:0, totalQty: 0})
-      return {...state, cart:cart}
+      return {...state, cart:cart, isLoading: false}
 
     case 'CART_SET_ADDRESS':
       cart = {...state.cart, address: {...action.payload}}

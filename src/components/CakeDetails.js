@@ -31,14 +31,9 @@ const CakeDetails = (props) => {
       }, error => console.log(error))
   }, [cakeParams.id])
 
-  // useEffect(() => {
-  //   console.log(cake?.name)
-  //   if (cake?.name) {
-  //     // let title = document.title
-  //     // title.replace('cake-name', cake.name)
-  //     document.title = cake.name + ' | Cake Shop'
-  //   }
-  // }, [props.location.pathname])
+  const onError = (event) => {
+    event.target.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoHD8IwNVC1TNA4pn6ZR4wzez4aibm7pxQjw&usqp=CAU"
+  }
 
   if (!cake) {
     return <Loader text="Please wait loading cake" />
@@ -55,7 +50,7 @@ const CakeDetails = (props) => {
             <div className="col-12 mb-0">
               <div className="view overlay rounded z-depth-1 main-img">
                 <a href={cake.image} data-size="710x823">
-                  <img src={cake.image} alt={cake.name} className="img-fluid z-depth-1" style={{width:"100%"}}/>
+                  <img src={cake.image} onError={onError} alt={cake.name} className="img-fluid z-depth-1" style={{width:"100%"}}/>
                 </a>
               </div>
             </div>

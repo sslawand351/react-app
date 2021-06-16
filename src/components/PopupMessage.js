@@ -7,7 +7,7 @@ export function PopupMessage(props) {
         setTimeout(() => {
             dispatch({type: 'CLEAR_MESSAGE'})
             event.target.parentNode.parentNode.className = 'modal hidden';
-        }, 1000)
+        }, props.timeout || 1000)
     }
     return <div className="modal show" ><div className="alert">
         <a href="#close" className="close" data-dismiss="alert">×</a>

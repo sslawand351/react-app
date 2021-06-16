@@ -13,7 +13,7 @@ export const addToCartMiddleware = (token, cart) => {
       return
     }
 
-    dispatch({type: 'ADD_TO_CART_REQUEST_INIT'})
+    dispatch({type: 'CART_REQUEST_PROCESSING_INIT'})
 
     addToCart(token, cart).then(response => {
       if (!response.data) {
@@ -37,6 +37,8 @@ export const addToCartMiddleware = (token, cart) => {
 
 export const removeOneCakeFromCartMiddleware = (token, cakeid) => {
   return dispatch => {
+    dispatch({type: 'CART_REQUEST_PROCESSING_INIT'})
+
     removeOneCakeFromCart(token, cakeid).then(response => {
       dispatch({
         type: 'REMOVE_ONE_CAKE_FROM_CART_SUCCESS',
@@ -48,6 +50,8 @@ export const removeOneCakeFromCartMiddleware = (token, cakeid) => {
 
 export const removeCakeFromCartMiddleware = (token, cakeid) => {
   return dispatch => {
+    dispatch({type: 'CART_REQUEST_PROCESSING_INIT'})
+
     removeCakeFromCart(token, cakeid).then(response => {
       dispatch({
         type: 'REMOVE_CAKE_FROM_CART_SUCCESS',
@@ -59,6 +63,8 @@ export const removeCakeFromCartMiddleware = (token, cakeid) => {
 
 export const cartMiddleware = (token) => {
   return dispatch => {
+    dispatch({type: 'CART_REQUEST_PROCESSING_INIT'})
+
     getCart(token).then(response => {
       dispatch({type:'LOAD_CART', payload: {...response}})
     })
