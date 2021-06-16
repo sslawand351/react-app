@@ -500,3 +500,6 @@ a {
   margin-top: 58px;
   background-color: #191515b3;
 }
+.cake {
+  box-shadow: 2px 2px 15px #000;
+}
