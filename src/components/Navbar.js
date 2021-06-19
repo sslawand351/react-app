@@ -1,10 +1,9 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { Link, withRouter } from "react-router-dom"
 
 function Navbar(props) {
-  let searchString
-  let searchFor = 'Enter the search keyword'
+  let [searchMsg, setSearchMsg] = useState('');
 
   useEffect(() => {
     const titleGroups = [
@@ -25,13 +24,10 @@ function Navbar(props) {
         let regex = new RegExp(grp.url,"g")
         return props.location.pathname.match(regex)
       })
-      // console.log(grp)
-      // let title = grp.title
       if (!grp) {
         document.title = props.data.projectName
       }
       if (grp && ['cake', 'search'].indexOf(grp.url) === -1) {
-        // console.log(grp.url)
         document.title = grp ? grp.title : props.data.projectName
       }
     }
@@ -40,15 +36,14 @@ function Navbar(props) {
 
   const search = (event) => {
     event.preventDefault()
-    if (searchString) {
-      searchFor = 'You search for ' + searchString
-      console.log('>>>>', searchFor);
-      props.history.push('/search?q=' + searchString)
+    if (searchMsg) {
+      setSearchMsg('');
+      props.history.push('/search?q=' + searchMsg)
     }
   }
 
   const getSearchText = (event) => {
-    searchString = event.target.value
+    setSearchMsg(event.target.value)
   }
 
   const openCart = () => {
@@ -73,7 +68,7 @@ function Navbar(props) {
           </li>}
         </ul>
         <form className="form-inline my-2 my-lg-0">
-          <input onChange={getSearchText} className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+          <input onChange={getSearchText} value={searchMsg} className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
           <button onClick={search} className="btn btn-outline-success my-2 my-sm-0 search-button" type="submit"><i className="fa fa-search"></i></button>
         </form>
         {props.user?.token && <Link to="/orders"><span className="nav-link">My Orders</span></Link>}

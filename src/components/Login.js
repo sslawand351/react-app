@@ -5,10 +5,6 @@ import { isEmpty, isValidEmail } from "../form-validation";
 import loginMiddleware from "../middleware/login";
 
 function Login(props) {
-  if (props.user?.token) {
-    props.history.push('/')
-  }
-
   let [user, setUser] = useState({
     email: {value: null, error: null},
     password: {value: null, error: null}

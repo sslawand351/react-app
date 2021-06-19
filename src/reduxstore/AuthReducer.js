@@ -1,7 +1,8 @@
 function AuthReducer(state={}, action) {
   // console.log(action)
-  state.message = null
   switch (action.type) {
+    case 'CLEAR_MESSAGE': return {...state, message: null}
+
     case 'USER_REGISTRATION_SUCCESS':
       return {
         ...state,
@@ -21,14 +22,12 @@ function AuthReducer(state={}, action) {
       return {
         ...state,
         user: {...action.payload},
-        message: null,
         isLoading: false
       }
     case 'GET_USER_BY_TOKEN_FAILURE':
       return {
         ...state,
         error: {...action.payload},
-        message: null,
         isLoading: false
       }
     case 'LOGIN_FAILURE':
